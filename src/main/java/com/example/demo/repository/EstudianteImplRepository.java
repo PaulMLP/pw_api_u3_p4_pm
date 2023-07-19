@@ -58,6 +58,7 @@ public class EstudianteImplRepository implements IEstudianteRepository {
 		this.entityManager.remove(this.buscarPorId(id));
 	}
 
+	@Override
 	public Estudiante buscarPorId(Integer id) {
 		return this.entityManager.find(Estudiante.class, id);
 	}

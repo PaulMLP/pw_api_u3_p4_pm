@@ -5,6 +5,9 @@ import java.util.List;
 import com.example.demo.repository.modelo.Estudiante;
 
 public interface IEstudianteRepository {
+	
+	public Estudiante buscarPorId(Integer id);
+	
 	public Estudiante seleccionarPorCedula(String cedula);
 
 	public void insertar(Estudiante estudiante);

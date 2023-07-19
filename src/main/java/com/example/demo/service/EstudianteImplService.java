@@ -14,6 +14,8 @@ public class EstudianteImplService implements IEstudianteService {
 	@Autowired
 	private IEstudianteRepository estudianteRepository;
 
+	
+	
 	@Override
 	public Estudiante seleccionarPorCedula(String cedula) {
 		// TODO Auto-generated method stub
@@ -42,6 +44,12 @@ public class EstudianteImplService implements IEstudianteService {
 	public List<Estudiante> buscarTodos(String provincia) {
 		// TODO Auto-generated method stub
 		return this.estudianteRepository.buscarTodos(provincia);
+	}
+
+	@Override
+	public Estudiante buscarPorId(Integer id) {
+		// TODO Auto-generated method stub
+		return this.estudianteRepository.buscarPorId(id);
 	}
 
 }
