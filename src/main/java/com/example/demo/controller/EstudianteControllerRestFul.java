@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.modelo.Estudiante;
@@ -27,10 +30,12 @@ public class EstudianteControllerRestFul {
 	private IEstudianteService estudianteService;
 
 	// GET
-	@GetMapping(path = "/{cedula}") // pathvariable
-	public ResponseEntity<Estudiante> consultarPorCedula(@PathVariable String cedula) { // anotacion del parametro con
-																						// el @PathVariable
-		return ResponseEntity.status(200).body(this.estudianteService.seleccionarPorCedula(cedula));
+	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_JSON_VALUE) // pathvariable
+	//@GetMapping(path = "/{cedula}", produces = "application/xml") // pathvariable
+	@ResponseStatus(code = HttpStatus.OK)
+	// anotacion del parametro con el @PathVariable
+	public Estudiante consultarPorCedula(@PathVariable String cedula) {
+		return this.estudianteService.seleccionarPorCedula(cedula);
 	}
 
 	@GetMapping
@@ -44,10 +49,16 @@ public class EstudianteControllerRestFul {
 	}
 
 	// POST
-	@PostMapping
-	public void guardar(@RequestBody Estudiante estudiante) {
-		this.estudianteService.guardar(estudiante);
+	@PostMapping(consumes = "application/json", produces = "application/json")
+	public Estudiante insertarEstudiante(@RequestBody Estudiante estudiante) {
+		return this.estudianteService.insertarEstudiante(estudiante);
 	}
+
+	// POST
+//	@PostMapping(consumes = "application/xml")
+//	public void guardar(@RequestBody Estudiante estudiante) {
+//		this.estudianteService.guardar(estudiante);
+//	}
 
 	// PUT
 	@PutMapping(path = "/{identificador}")

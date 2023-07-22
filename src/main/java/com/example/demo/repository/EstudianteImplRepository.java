@@ -70,4 +70,10 @@ public class EstudianteImplRepository implements IEstudianteRepository {
 		return myQuery.getResultList();
 	}
 
+	@Override
+	public Estudiante insertarEstudiante(Estudiante estudiante) {
+		this.entityManager.persist(estudiante);
+		return this.seleccionarPorCedula(estudiante.getCedula());
+	}
+
 }
