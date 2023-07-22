@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,14 +28,19 @@ public class EstudianteControllerRestFul {
 
 	// GET
 	@GetMapping(path = "/{cedula}") // pathvariable
-	public Estudiante consultarPorCedula(@PathVariable String cedula) { // anotacion del parametro con el @PathVariable
-		return this.estudianteService.seleccionarPorCedula(cedula);
+	public ResponseEntity<Estudiante> consultarPorCedula(@PathVariable String cedula) { // anotacion del parametro con
+																						// el @PathVariable
+		return ResponseEntity.status(200).body(this.estudianteService.seleccionarPorCedula(cedula));
 	}
 
 	@GetMapping
-	public List<Estudiante> consultarTodos(@RequestParam String provincia) {
+	public ResponseEntity<List<Estudiante>> consultarTodos(@RequestParam String provincia) {
 		// buscarTodos?provincia=pichincha
-		return this.estudianteService.buscarTodos(provincia);
+		List<Estudiante> lista = this.estudianteService.buscarTodos(provincia);
+
+		HttpHeaders cabecera = new HttpHeaders();
+		cabecera.add("detalleMensaje", "correcto");
+		return new ResponseEntity<List<Estudiante>>(lista, cabecera, 227);
 	}
 
 	// POST
