@@ -12,7 +12,7 @@ import com.example.demo.service.IMateriaService;
 
 @RestController
 @RequestMapping("/materias") // path del controlador (plural)
-public class MatriculaControllerRestFul {
+public class MateriaControllerRestFul {
 
 	@Autowired
 	private IMateriaService materiaService;

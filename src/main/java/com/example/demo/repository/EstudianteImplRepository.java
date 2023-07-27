@@ -65,7 +65,8 @@ public class EstudianteImplRepository implements IEstudianteRepository {
 
 	@Override
 	public List<Estudiante> buscarTodos(String provincia) {
-		TypedQuery<Estudiante> myQuery = this.entityManager.createQuery("SELECT e FROM Estudiante e WHERE e.provincia =:datoProvincia", Estudiante.class);
+		TypedQuery<Estudiante> myQuery = this.entityManager
+				.createQuery("SELECT e FROM Estudiante e WHERE e.provincia =:datoProvincia", Estudiante.class);
 		myQuery.setParameter("datoProvincia", provincia);
 		return myQuery.getResultList();
 	}
@@ -74,6 +75,13 @@ public class EstudianteImplRepository implements IEstudianteRepository {
 	public Estudiante insertarEstudiante(Estudiante estudiante) {
 		this.entityManager.persist(estudiante);
 		return this.seleccionarPorCedula(estudiante.getCedula());
+	}
+
+	@Override
+	public List<Estudiante> buscarTodos() {
+		TypedQuery<Estudiante> myQuery = this.entityManager.createQuery("SELECT e FROM Estudiante e ",
+				Estudiante.class);
+		return myQuery.getResultList();
 	}
 
 }
