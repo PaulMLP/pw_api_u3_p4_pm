@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.service.IEstudianteService;
+import com.example.demo.service.IMateriaService;
 import com.example.demo.service.to.EstudianteTO;
 import com.example.demo.service.to.MateriaTO;
 
@@ -32,6 +33,8 @@ public class EstudianteControllerRestFul {
 
 	@Autowired
 	private IEstudianteService estudianteService;
+	@Autowired
+	private IMateriaService materiaService;
 
 	// GET
 	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_JSON_VALUE) // pathvariable
@@ -42,7 +45,7 @@ public class EstudianteControllerRestFul {
 		return this.estudianteService.seleccionarPorCedula(cedula);
 	}
 
-	@GetMapping(path = "/hateoas")
+	@GetMapping(path = "/hateoas", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EstudianteTO>> consultarTodosHATEOAS() {
 		List<EstudianteTO> lista = this.estudianteService.buscarTodos();
 		for (EstudianteTO e : lista) {
@@ -51,11 +54,6 @@ public class EstudianteControllerRestFul {
 			e.add(myLink);
 		}
 		return new ResponseEntity<>(lista, null, 200);
-	}
-
-	@GetMapping(path = "/{cedula}/materias")
-	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(String cedula) {
-		return null;
 	}
 
 	// POST
@@ -93,6 +91,12 @@ public class EstudianteControllerRestFul {
 	@DeleteMapping(path = "/{id}")
 	public void borrar(@PathVariable Integer id) {
 		this.estudianteService.eliminar(id);
+	}
+
+	@GetMapping(path = "/{cedula}/materias", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable String cedula) {
+		List<MateriaTO> lista = this.materiaService.buscarPorCedulaEstudiante(cedula);
+		return new ResponseEntity<>(lista, null, 200);
 	}
 
 }
