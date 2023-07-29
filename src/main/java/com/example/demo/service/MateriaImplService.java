@@ -45,9 +45,15 @@ public class MateriaImplService implements IMateriaService {
 	}
 
 	@Override
+	public MateriaTO buscarPorIdTO(Integer id) {
+		// TODO Auto-generated method stub
+		return this.convertirAMateria(this.materiaRepository.seleccionarPorId(id));
+	}
+
+	@Override
 	public Materia buscarPorId(Integer id) {
 		// TODO Auto-generated method stub
-		return this.materiaRepository.seleccionarPorId(id);
+		return this.buscarPorId(id);
 	}
 
 }

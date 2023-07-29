@@ -11,5 +11,7 @@ public interface IMateriaService {
 	public MateriaTO seleccionarPorId(Integer id);
 
 	public void guardar(Materia materia);
+
+	public MateriaTO buscarPorIdTO(Integer id);
 	public Materia buscarPorId(Integer id);
 }

@@ -6,6 +6,7 @@ import com.example.demo.repository.modelo.Materia;
 
 public interface IMateriaRepository {
 	public List<Materia> buscarPorCedulaEstudiante(String cedula);
+	
 
 	public Materia seleccionarPorId(Integer id);
 

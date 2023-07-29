@@ -10,6 +10,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,6 +30,7 @@ import com.example.demo.service.to.MateriaTO;
 
 @RestController
 @RequestMapping("/estudiantes") // path del controlador (plural)
+@CrossOrigin
 public class EstudianteControllerRestFul {
 
 	@Autowired
@@ -44,9 +46,9 @@ public class EstudianteControllerRestFul {
 	public Estudiante consultarPorCedula(@PathVariable String cedula) {
 		return this.estudianteService.seleccionarPorCedula(cedula);
 	}
-
-	@GetMapping(path = "/hateoas", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<EstudianteTO>> consultarTodosHATEOAS() {
+	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<EstudianteTO>> consultarTodos() {
 		List<EstudianteTO> lista = this.estudianteService.buscarTodos();
 		for (EstudianteTO e : lista) {
 			Link myLink = linkTo(methodOn(EstudianteControllerRestFul.class).buscarPorEstudiante(e.getCedula()))
@@ -55,6 +57,18 @@ public class EstudianteControllerRestFul {
 		}
 		return new ResponseEntity<>(lista, null, 200);
 	}
+	
+
+//	@GetMapping(path = "/hateoas", produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<List<EstudianteTO>> consultarTodosHATEOAS() {
+//		List<EstudianteTO> lista = this.estudianteService.buscarTodos();
+//		for (EstudianteTO e : lista) {
+//			Link myLink = linkTo(methodOn(EstudianteControllerRestFul.class).buscarPorEstudiante(e.getCedula()))
+//					.withRel("materias");
+//			e.add(myLink);
+//		}
+//		return new ResponseEntity<>(lista, null, 200);
+//	}
 
 	// POST
 	@PostMapping(consumes = "application/json", produces = "application/json")
@@ -95,8 +109,19 @@ public class EstudianteControllerRestFul {
 
 	@GetMapping(path = "/{cedula}/materias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable String cedula) {
+
 		List<MateriaTO> lista = this.materiaService.buscarPorCedulaEstudiante(cedula);
+
+		for (MateriaTO m : lista) {
+			Link myLink = linkTo(methodOn(MateriaControllerRestFul.class)
+					.consultarPorId(m.getId()))
+					.withSelfRel();
+
+			m.add(myLink);
+		}
+
 		return new ResponseEntity<>(lista, null, 200);
+
 	}
 
 }
