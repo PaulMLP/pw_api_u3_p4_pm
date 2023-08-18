@@ -2,13 +2,13 @@ package com.example.demo.repository.modelo;
 
 import java.time.LocalTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "horario")
@@ -19,21 +19,21 @@ public class Horario {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_horario")
 	@SequenceGenerator(name = "seq_horario", sequenceName = "seq_horario", allocationSize = 1)
 	private Integer id;
-	
+
 	@Column(name = "hori_dia")
 	private String dia;
-	
+
 	@Column(name = "hori_materia")
 	private String materia;
-	
+
 	@Column(name = "hori_horaInicio")
 	private LocalTime horaInicio;
-	
+
 	@Column(name = "hori_horaFin")
 	private LocalTime horaFin;
-	
-	//GET y SET
-	
+
+	// GET y SET
+
 	public Integer getId() {
 		return id;
 	}
@@ -84,8 +84,7 @@ public class Horario {
 
 	@Column(name = "hori_aula")
 	private String aula;
-	
-	//SET y GET
 
+	// SET y GET
 
 }

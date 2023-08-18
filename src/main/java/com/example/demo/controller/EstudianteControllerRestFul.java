@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class EstudianteControllerRestFul {
 	public Estudiante consultarPorCedula(@PathVariable String cedula) {
 		return this.estudianteService.seleccionarPorCedula(cedula);
 	}
-	
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EstudianteTO>> consultarTodos() {
 		List<EstudianteTO> lista = this.estudianteService.buscarTodos();
@@ -55,9 +56,8 @@ public class EstudianteControllerRestFul {
 					.withRel("materias");
 			e.add(myLink);
 		}
-		return new ResponseEntity<>(lista, null, 200);
+		return new ResponseEntity<>(lista, new HttpHeaders(), 200);
 	}
-	
 
 //	@GetMapping(path = "/hateoas", produces = MediaType.APPLICATION_JSON_VALUE)
 //	public ResponseEntity<List<EstudianteTO>> consultarTodosHATEOAS() {
@@ -69,6 +69,16 @@ public class EstudianteControllerRestFul {
 //		}
 //		return new ResponseEntity<>(lista, null, 200);
 //	}
+	
+	/*@GetMapping
+	public ResponseEntity<List<Estudiante>> consultarTodos(@RequestParam String provincia){
+		//return this.estudianteService.buscarTodos(provincia);
+		List<Estudiante> lista = this.estudianteService.buscarTodos(provincia);
+		HttpHeaders cabeceras = new HttpHeaders();
+		cabeceras.add("detalleMensaje", "Estudiantes encontrados");
+		cabeceras.add("valorAPI", "Incalculable");
+		return new ResponseEntity<List<Estudiante>>(lista, cabeceras,227);
+	}*/
 
 	// POST
 	@PostMapping(consumes = "application/json", produces = "application/json")
@@ -102,9 +112,11 @@ public class EstudianteControllerRestFul {
 	}
 
 	// DELETE
-	@DeleteMapping(path = "/{id}")
-	public void borrar(@PathVariable Integer id) {
+	@DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
+	public Estudiante borrar(@PathVariable Integer id) {
+		Estudiante est = this.estudianteService.buscarPorId(id);
 		this.estudianteService.eliminar(id);
+		return est;
 	}
 
 	@GetMapping(path = "/{cedula}/materias", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -113,9 +125,7 @@ public class EstudianteControllerRestFul {
 		List<MateriaTO> lista = this.materiaService.buscarPorCedulaEstudiante(cedula);
 
 		for (MateriaTO m : lista) {
-			Link myLink = linkTo(methodOn(MateriaControllerRestFul.class)
-					.consultarPorId(m.getId()))
-					.withSelfRel();
+			Link myLink = linkTo(methodOn(MateriaControllerRestFul.class).consultarPorId(m.getId())).withSelfRel();
 
 			m.add(myLink);
 		}

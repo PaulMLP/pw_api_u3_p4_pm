@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,12 @@ public class EstudianteImplService implements IEstudianteService {
 	@Override
 	public Estudiante insertarEstudiante(Estudiante estudiante) {
 		// TODO Auto-generated method stub
+		try {
+			TimeUnit.SECONDS.sleep(20);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return this.estudianteRepository.insertarEstudiante(estudiante);
 	}
 
